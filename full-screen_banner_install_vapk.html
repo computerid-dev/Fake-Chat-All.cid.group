@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Pasang Aplikasi — Fake Chat [all] | by: CID-GROUP</title>
+<meta name="theme-color" content="#0a0a0b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="images/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/icons/icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #17171a;
+    --border: #2a2a2e;
+    --text: #f2f2f3;
+    --text-muted: #9a9aa0;
+    --accent: #4f7cff;
+    --font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--text);
+    font-family: var(--font);
+    height: 100%;
+    overscroll-behavior: none;
+  }
+
+  /* Fullscreen banner */
+  .banner {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: env(safe-area-inset-top, 24px) 24px env(safe-area-inset-bottom, 24px);
+    background:
+      radial-gradient(circle at 50% -10%, rgba(79,124,255,0.16), transparent 55%),
+      var(--bg);
+  }
+
+  .banner-top { display:flex; justify-content:flex-end; padding-top: 12px; }
+  .skip-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+    padding: 8px 14px; border-radius: 999px; font-size: 12.5px; cursor: pointer;
+  }
+
+  .banner-mid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
+    padding: 20px 8px;
+  }
+
+  .app-icon {
+    width: 128px; height: 128px;
+    border-radius: 30px;
+    box-shadow: 0 12px 40px rgba(79,124,255,0.25), 0 4px 18px rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+  }
+
+  .app-name { font-size: 21px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .app-sub { font-size: 13px; color: var(--text-muted); margin: 0; max-width: 280px; line-height: 1.5; }
+
+  .badge-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+  .badge {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size: 11.5px; font-weight: 600; color: var(--text-muted);
+    border: 1px solid var(--border); background: var(--surface);
+    padding: 6px 12px; border-radius: 999px;
+  }
+
+  .feature-list {
+    width: 100%; max-width: 340px;
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 14px; text-align: left;
+  }
+  .feature-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 14px;
+  }
+  .feature-item .emoji { font-size: 20px; }
+  .feature-item .txt { font-size: 13px; color: var(--text); }
+  .feature-item .txt small { display:block; color: var(--text-muted); font-size: 11.5px; margin-top: 1px; }
+
+  .banner-bottom { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; }
+
+  .install-btn {
+    width: 100%; padding: 15px 18px; border-radius: 12px; border: none;
+    background: var(--text); color: #111; font-weight: 700; font-size: 15px;
+    cursor: pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+    transition: opacity 0.15s ease, transform 0.05s ease;
+  }
+  .install-btn:active { transform: scale(0.99); }
+  .install-btn:disabled { opacity: 0.5; }
+
+  .later-btn {
+    width: 100%; padding: 13px 18px; border-radius: 12px;
+    background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+    font-weight: 600; font-size: 13.5px; cursor: pointer;
+  }
+
+  .manual-note {
+    font-size: 12px; color: var(--text-muted); text-align: center;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; line-height: 1.5; display: none;
+  }
+  .manual-note.show { display: block; }
+  .manual-note b { color: var(--text); }
+
+  .brand-credit { text-align: center; font-size: 11px; color: #6b6b70; padding-top: 4px; }
+  .brand-credit b { color: var(--text-muted); }
+
+  /* Portrait-only hard lock */
+  .rotate-guard {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg); color: var(--text);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; text-align: center; padding: 24px;
+  }
+  .rotate-guard svg { width: 56px; height: 56px; color: var(--accent); }
+  .rotate-guard h2 { font-size: 16px; margin: 0; font-weight: 600; }
+  .rotate-guard p { font-size: 13px; color: var(--text-muted); margin: 0; max-width: 260px; }
+
+  @media (orientation: landscape) and (max-height: 600px) {
+    .rotate-guard { display: flex; }
+    .banner { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="rotate-guard" id="rotateGuard">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="2" width="10" height="16" rx="2"></rect><path d="M12 22v-2M2 12h2M20 12h2"></path></svg>
+  <h2>Mode Portrait Saja</h2>
+  <p>Fake Chat [all] dikunci tampilan potret (portrait). Putar HP kamu ke posisi normal untuk melanjutkan.</p>
+</div>
+
+<div class="banner" id="banner">
+  <div class="banner-top">
+    <button class="skip-btn" id="skipBtn">Lewati ›</button>
+  </div>
+
+  <div class="banner-mid">
+    <img src="images/icons/icon-512.png" alt="Fake Chat All" class="app-icon">
+    <h1 class="app-name">Fake Chat [all]</h1>
+    <p class="app-sub">by: CID-GROUP — Pasang sebagai aplikasi di layar utama HP kamu. Ringan, cepat, dan bisa dipakai walau tanpa internet.</p>
+
+    <div class="badge-row">
+      <span class="badge">🔒 Portrait Only</span>
+      <span class="badge">📴 Bisa Offline</span>
+      <span class="badge">⚡ Tanpa Iklan</span>
+    </div>
+
+    <div class="feature-list">
+      <div class="feature-item">
+        <span class="emoji">💬</span>
+        <span class="txt">Generator WhatsApp, TikTok, IG Story &amp; Kompas<small>Semua diproses langsung di HP kamu</small></span>
+      </div>
+      <div class="feature-item">
+        <span class="emoji">📶</span>
+        <span class="txt">Tetap jalan tanpa koneksi internet<small>Data & gambar tidak dikirim ke server manapun</small></span>
+      </div>
+      <div class="feature-item">
+        <span class="emoji">🏷️</span>
+        <span class="txt">Dikembangkan oleh Computer[ID]•GROUP<small>Update dan perbaikan berkelanjutan</small></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner-bottom">
+    <div class="manual-note" id="manualNote">
+      Browser kamu belum mendukung instalasi otomatis. Buka menu <b>⋮ / Share</b> pada browser, lalu pilih <b>"Add to Home Screen" / "Tambahkan ke Layar Utama"</b>.
+    </div>
+    <button class="install-btn" id="installNowBtn">⬇️ Install Aplikasi</button>
+    <button class="later-btn" id="laterBtn">Nanti saja, buka aplikasi</button>
+    <div class="brand-credit">Fake Chat [all] · <b>Computer[ID]•GROUP</b></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  const installBtn = document.getElementById('installNowBtn');
+  const manualNote = document.getElementById('manualNote');
+  const laterBtn = document.getElementById('laterBtn');
+  const skipBtn = document.getElementById('skipBtn');
+
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if (isStandalone) {
+    window.location.replace('index.html');
+    return;
+  }
+
+  let deferredPrompt = window.__cidDeferredInstallPrompt || null;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.textContent = '⬇️ Install Aplikasi';
+    manualNote.classList.remove('show');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    window.location.replace('index.html');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      if (choice && choice.outcome === 'accepted') {
+        window.location.replace('index.html');
+      }
+    } else {
+      manualNote.classList.add('show');
+    }
+  });
+
+  laterBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+  skipBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+
+  // beri sedikit waktu untuk event beforeinstallprompt sebelum menampilkan catatan manual
+  setTimeout(() => {
+    if (!deferredPrompt) manualNote.classList.add('show');
+  }, 1800);
+})();
+</script>
+</body>
+</html>
