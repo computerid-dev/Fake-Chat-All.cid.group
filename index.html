@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Fake Chat Generator | Computer[ID]•GROUP</title>
+<meta name="description" content="Generator fake chat WhatsApp, TikTok, Instagram Story, dan Kompas. Dibuat oleh Computer[ID]•GROUP. Bisa dipakai offline.">
+<meta name="theme-color" content="#0a0a0b">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="images/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="images/icons/icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fake Chat All">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="status-banner" id="statusBanner">Kamu sedang offline — aplikasi tetap bisa dipakai 📴</div>
+
+<div class="rotate-lock" id="rotateLock">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="2" width="10" height="16" rx="2"></rect><path d="M12 22v-2M2 12h2M20 12h2"></path></svg>
+  <h2>Putar ke mode Portrait</h2>
+  <p>Aplikasi ini dikunci mode potret (portrait) supaya tampilan tetap rapi. Balikkan HP kamu ya.</p>
+</div>
+
+<main class="app-shell">
+
+  <header class="app-header">
+    <img src="images/icons/icon-192.png" alt="Computer[ID]•GROUP" class="brand-logo">
+    <h1>Fake Chat Generator</h1>
+    <p class="tagline">Bikin mockup chat kece buat kebutuhan konten kamu.</p>
+    <span class="brand-pill"><span class="dot"></span>Computer[ID]•GROUP</span>
+  </header>
+
+  <div class="top-actions">
+    <button class="icon-btn" id="installBtn" hidden>⬇️ Install Aplikasi</button>
+  </div>
+
+  <section class="card">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="whatsapp" role="tab">WhatsApp</button>
+      <button class="tab-btn" data-tab="tiktok" role="tab">TikTok</button>
+      <button class="tab-btn" data-tab="igstory" role="tab">IG Story</button>
+      <button class="tab-btn" data-tab="kompas" role="tab">Kompas</button>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div class="tab-panel" data-panel="whatsapp">
+      <div class="field">
+        <label for="waText">Teks Chat</label>
+        <textarea class="textarea" id="waText" placeholder="Tulis pesan... (emoji juga didukung 😄)"></textarea>
+      </div>
+      <div class="field">
+        <label for="waTime">Jam</label>
+        <input class="input" id="waTime" type="text" placeholder="16.34">
+      </div>
+      <div class="field">
+        <label>Lampiran Gambar (opsional)</label>
+        <div class="upload-box" id="waImgBox">
+          <span class="upload-hint">📎 Upload gambar</span>
+          <div class="upload-overlay">Ganti gambar</div>
+          <button class="clear-btn" data-clear="waImg" type="button">✕</button>
+          <input type="file" accept="image/*" id="waImg">
+        </div>
+      </div>
+      <button class="btn-primary" data-generate="whatsapp">Generate Gambar</button>
+    </div>
+
+    <!-- TIKTOK -->
+    <div class="tab-panel" data-panel="tiktok" hidden>
+      <div class="field">
+        <label for="ttUser">Username</label>
+        <input class="input" id="ttUser" type="text" placeholder="@username">
+      </div>
+      <div class="field">
+        <label for="ttText">Teks Komentar</label>
+        <textarea class="textarea" id="ttText" placeholder="Tulis komentarnya..."></textarea>
+      </div>
+      <div class="field">
+        <label>Foto Avatar</label>
+        <div class="upload-box" id="ttAvatarBox">
+          <span class="upload-hint">🙂 Upload avatar</span>
+          <div class="upload-overlay">Ganti gambar</div>
+          <button class="clear-btn" data-clear="ttAvatar" type="button">✕</button>
+          <input type="file" accept="image/*" id="ttAvatar">
+        </div>
+      </div>
+      <button class="btn-primary" data-generate="tiktok">Generate Gambar</button>
+    </div>
+
+    <!-- IG STORY -->
+    <div class="tab-panel" data-panel="igstory" hidden>
+      <div class="field-row">
+        <div class="field">
+          <label for="igName">Nama</label>
+          <input class="input" id="igName" type="text" placeholder="Nama">
+        </div>
+        <div class="field">
+          <label for="igUser">Username</label>
+          <input class="input" id="igUser" type="text" placeholder="@user">
+        </div>
+      </div>
+      <div class="field">
+        <label>Foto Profil</label>
+        <div class="upload-box" id="igPPBox">
+          <span class="upload-hint">🙂 Upload foto profil</span>
+          <div class="upload-overlay">Ganti gambar</div>
+          <button class="clear-btn" data-clear="igPP" type="button">✕</button>
+          <input type="file" accept="image/*" id="igPP">
+        </div>
+      </div>
+      <div class="field">
+        <label>Foto Latar (Story)</label>
+        <div class="upload-box" id="igPhotoBox">
+          <span class="upload-hint">🖼️ Upload foto latar</span>
+          <div class="upload-overlay">Ganti gambar</div>
+          <button class="clear-btn" data-clear="igPhoto" type="button">✕</button>
+          <input type="file" accept="image/*" id="igPhoto">
+        </div>
+      </div>
+      <button class="btn-primary" data-generate="igstory">Generate Gambar</button>
+    </div>
+
+    <!-- KOMPAS -->
+    <div class="tab-panel" data-panel="kompas" hidden>
+      <div class="field">
+        <label for="kpText">Judul Berita</label>
+        <textarea class="textarea" id="kpText" placeholder="Judul berita heboh..."></textarea>
+      </div>
+      <div class="field">
+        <label>Foto Berita</label>
+        <div class="upload-box" id="kpPhotoBox">
+          <span class="upload-hint">🖼️ Upload foto berita</span>
+          <div class="upload-overlay">Ganti gambar</div>
+          <button class="clear-btn" data-clear="kpPhoto" type="button">✕</button>
+          <input type="file" accept="image/*" id="kpPhoto">
+        </div>
+      </div>
+      <button class="btn-primary" data-generate="kompas">Generate Gambar</button>
+    </div>
+
+    <div style="padding: 0 20px 20px;">
+      <div class="alert" id="errorBox" hidden></div>
+      <div class="result" id="resultBox" hidden>
+        <div class="result-header">
+          <h3>Hasil Generate</h3>
+          <a class="icon-btn" id="downloadBtn" download="fake-chat.png">⬇ Simpan Gambar</a>
+        </div>
+        <div class="result-frame">
+          <img id="resultImg" alt="Hasil generate">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="app-footer">
+    <a class="icon-btn" href="full-screen_banner_install_vapk.html">📲 Pasang sebagai Aplikasi</a>
+    <p class="credit">Dikembangkan oleh <b>Computer[ID]•GROUP</b> · Berjalan 100% offline di perangkatmu</p>
+  </footer>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<canvas id="workCanvas" style="display:none;"></canvas>
+
+<script src="script.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
